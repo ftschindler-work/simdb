@@ -30,9 +30,11 @@ PY2 = sys.version_info.major == 2
 import atexit
 from collections import defaultdict
 try:
-    from cPickle import dump
+    from pymor.core.pickle import dump, PicklingError
 except ImportError:
-    from pickle import dump
+    from cPickle import dump, PicklingError
+except ImportError:
+    from pickle import dump, PicklingError
 import datetime
 import os
 if PY2:

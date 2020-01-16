@@ -28,6 +28,8 @@ import sys
 PY2 = sys.version_info.major == 2
 
 try:
+    from pymor.core.pickle import dumps, load
+except ImportError:
     from cPickle import dumps, load
 except ImportError:
     from pickle import dumps, load

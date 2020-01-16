@@ -288,7 +288,15 @@ def _write_data(successful):
     data = {k: process_data(v) for k, v in _current_dataset_data.items()}
 
     with open(os.path.join(_current_dataset, 'DATA'), 'wb') as f:
-        dump(data, f, protocol=-1)
+        try:
+            dump(data, f, protocol=-1)
+        except PicklingError:
+            for kk, vv in data.items():
+                try:
+                    dump({kk: vv}, f, protocol=-1)
+                except PicklingError as e:
+                    print(f'could not pickle "{kk}"')
+                    raise e
 
     def get_metadata(v):
         if isinstance(v, np.ndarray):

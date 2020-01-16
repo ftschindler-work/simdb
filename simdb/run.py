@@ -415,8 +415,7 @@ def _excepthook(exc_type, exc_val, exc_tb):
 _saved_excepthook, sys.excepthook = sys.excepthook, _excepthook
 
 
-@atexit.register
-def _exit_hook():
+def declare_finished():
     if _run:
         finished = datetime.datetime.now()
         if _current_dataset:
@@ -425,3 +424,8 @@ def _exit_hook():
                 yaml.dump(finished, f)
         with open(os.path.join(_db_path, 'RUNS', _run, 'FINISHED'), 'wt') as f:
             yaml.dump(finished, f)
+
+
+@atexit.register
+def _exit_hook():
+    declare_finished()
